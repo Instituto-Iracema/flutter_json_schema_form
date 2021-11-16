@@ -29,4 +29,28 @@ void main() {
       expect(find.text('Login'), findsOneWidget);
     },
   );
+
+  testWidgets('Renders jsonSchema description correctly',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: FlutterJsonSchemaForm.fromJsonSchema(
+            jsonSchema: JsonSchema.fromMap(
+              {
+                "type": "object",
+                "title": "Login",
+                "description": "Login to the system",
+                "properties": {
+                  "username": {"type": "string", "title": "Username"},
+                  "password": {"type": "string", "title": "Password"}
+                }
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    expect(find.text('Login to the system'), findsOneWidget);
+  });
 }

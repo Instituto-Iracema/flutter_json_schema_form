@@ -18,7 +18,21 @@ class FlutterJsonSchemaForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(jsonSchema.title as String));
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (jsonSchema.title is String)
+            Text(
+              jsonSchema.title as String,
+            ),
+          if (jsonSchema.description is String)
+            Text(
+              jsonSchema.description as String,
+            ),
+        ],
+      ),
+    );
   }
 }
 
