@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_json_schema_form/controller/flutter_json_schema_form_controller.dart';
 import 'package:flutter_json_schema_form/widgets/flutter_json_schema_field.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,6 +21,8 @@ void main() {
                   "title": "Username",
                 },
               ),
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
             ),
           ),
         ),
@@ -42,6 +45,8 @@ void main() {
                   "title": "Age",
                 },
               ),
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
             ),
           ),
         ),
@@ -74,6 +79,8 @@ void main() {
                   },
                 },
               ),
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
             ),
           ),
         ),

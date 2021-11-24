@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_json_schema_form/controller/flutter_json_schema_form_controller.dart';
 import 'package:flutter_json_schema_form/widgets/flutter_json_schema_field.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,6 +21,8 @@ void main() {
                   "title": "Login",
                 },
               ),
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
             ),
           ),
         ),
@@ -41,6 +44,8 @@ void main() {
                 "description": "Login to the system",
               },
             ),
+            controller: FlutterJsonSchemaFormController(),
+            path: [],
           ),
         ),
       ),
@@ -50,7 +55,7 @@ void main() {
 
   // Should render properties as TextFields
 
-  group('Should render properties as TextFields', () {
+  group('Should render properties as FlutterJsonSchemaFormField', () {
     testWidgets(
         'With two properties should render two FlutterJsonSchemaFormField',
         (WidgetTester tester) async {
@@ -74,6 +79,8 @@ void main() {
                   },
                 },
               ),
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
             ),
           ),
         ),

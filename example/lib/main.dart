@@ -112,6 +112,7 @@ class MyApp extends StatelessWidget {
                       }
                     },
                   ),
+                  path: [],
                 ),
               ),
               Spacer(),

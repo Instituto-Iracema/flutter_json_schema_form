@@ -16,7 +16,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   final JsonSchema jsonSchema;
 
-  final FlutterJsonSchemaFormController? controller;
+  final FlutterJsonSchemaFormController controller;
 
   final List<String> path;
 
@@ -33,7 +33,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               labelText: title,
             ),
             onChanged: (value) {
-              controller!.updateValue(path, value);
+              controller.updateValue(path, value);
             },
           ),
         );
@@ -45,7 +45,9 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               labelText: title,
             ),
             keyboardType: TextInputType.number,
-            onChanged: (value) {},
+            onChanged: (value) {
+              controller.updateValue(path, value);
+            },
           ),
         );
       case JsonSchemaType.object:
@@ -55,6 +57,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
             FlutterJsonSchemaForm.fromJsonSchema(
               jsonSchema: jsonSchema,
               isInnerField: true,
+              controller: controller,
+              path: path,
             ),
           ],
         );

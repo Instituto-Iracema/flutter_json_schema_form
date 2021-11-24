@@ -14,7 +14,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
       {Key? key,
       required this.jsonSchema,
       this.isInnerField = false,
-      this.controller})
+      required this.path,
+      required this.controller})
       : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -22,7 +23,9 @@ class FlutterJsonSchemaForm extends StatelessWidget {
 
   final bool isInnerField;
 
-  final FlutterJsonSchemaFormController? controller;
+  final FlutterJsonSchemaFormController controller;
+
+  final List<String> path;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class FlutterJsonSchemaForm extends StatelessWidget {
               .map(
                 (entry) => FlutterJsonSchemaFormField.fromJsonSchema(
                   jsonSchema: entry.value,
-                  path: [entry.key],
+                  path: path.isEmpty ? [entry.key] : [...path, entry.key],
                   controller: controller,
                 ),
               )
@@ -57,14 +60,14 @@ class FlutterJsonSchemaForm extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      debugPrint(
-                        'Controller data: ${controller?.data.toString()}',
-                      );
-                    },
-                    child: const Text('Submit'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     debugPrint(
+                  //       'Controller data: ${controller.data.toString()}',
+                  //     );
+                  //   },
+                  //   child: const Text('Submit'),
+                  // ),
                 ],
               ),
       ],
