@@ -70,9 +70,9 @@ packages:
   json_schema_document:
     dependency: "direct main"
     description:
-      path: "../json_schema_document"
-      relative: true
-    source: path
+      name: json_schema_document
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   lints:
     dependency: transitive
