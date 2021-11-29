@@ -10,13 +10,15 @@ import 'controller/flutter_json_schema_form_controller.dart';
 
 /// A widget that displays a form based on a JSON Schema.
 class FlutterJsonSchemaForm extends StatelessWidget {
-  const FlutterJsonSchemaForm.fromJsonSchema(
-      {Key? key,
-      required this.jsonSchema,
-      this.isInnerField = false,
-      required this.path,
-      required this.controller})
-      : super(key: key);
+  const FlutterJsonSchemaForm.fromJsonSchema({
+    Key? key,
+    required this.jsonSchema,
+    this.isInnerField = false,
+    required this.path,
+    required this.controller,
+    this.onSubmit,
+    this.buttonText,
+  }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
   final JsonSchema jsonSchema;
@@ -26,6 +28,10 @@ class FlutterJsonSchemaForm extends StatelessWidget {
   final FlutterJsonSchemaFormController controller;
 
   final List<String> path;
+
+  final String? buttonText;
+
+  final Function? onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +66,14 @@ class FlutterJsonSchemaForm extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     debugPrint(
-                  //       'Controller data: ${controller.data.toString()}',
-                  //     );
-                  //   },
-                  //   child: const Text('Submit'),
-                  // ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (onSubmit != null) {
+                        onSubmit!();
+                      }
+                    },
+                    child: Text(buttonText ?? 'Submit'),
+                  ),
                 ],
               ),
       ],
