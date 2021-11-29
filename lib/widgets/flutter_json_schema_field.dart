@@ -54,12 +54,15 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
         return Column(
           children: [
             const SizedBox(height: 8),
-            FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: jsonSchema,
-              isInnerField: true,
-              controller: controller,
-              path: path,
-            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: FlutterJsonSchemaForm.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                isInnerField: true,
+                controller: controller,
+                path: path,
+              ),
+            )
           ],
         );
       default:
