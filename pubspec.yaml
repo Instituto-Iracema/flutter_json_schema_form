@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  json_schema_document: ^0.0.1
+  json_schema_document: ^0.0.2
   tuple: ^2.0.0
       
 
