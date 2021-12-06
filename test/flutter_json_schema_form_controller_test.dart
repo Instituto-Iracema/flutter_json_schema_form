@@ -67,8 +67,9 @@ void main() {
       expect(controllerMapping['username'] is TextEditingController, true);
     });
 
-    // Should generate corresponding map on nested jsonSchema
-    test('Should generate corresponding map on nested jsonSchema', () {
+    // Should generate corresponding map on nested jsonSchema - level 1
+    test('Should generate corresponding map on nested jsonSchema  - level 1',
+        () {
       final controllerMapping =
           generateEditingControllerMapping(JsonSchema.fromMap({
         "type": "object",
@@ -100,5 +101,77 @@ void main() {
               is TextEditingController,
           true);
     });
+  });
+
+  // Should generate corresponding map on nested jsonSchema - level 2
+  test('Should generate corresponding map on nested jsonSchema - level 2', () {
+    final controllerMapping =
+        generateEditingControllerMapping(JsonSchema.fromMap({
+      "type": "object",
+      "title": "Login",
+      "properties": {
+        "coordinates": {
+          "type": "object",
+          "title": "Coordinates",
+          "properties": {
+            "latitude": {
+              "type": "object",
+              "title": "Latitude",
+              "properties": {
+                "decimal": {
+                  "type": "number",
+                  "title": "Decimal",
+                },
+                "degrees": {
+                  "type": "number",
+                  "title": "Degrees",
+                },
+                "minutes": {
+                  "type": "number",
+                  "title": "Minutes",
+                },
+                "seconds": {
+                  "type": "number",
+                  "title": "Seconds",
+                },
+              },
+            },
+            "longitude": {
+              "type": "object",
+              "title": "Longitude",
+              "properties": {
+                "decimal": {
+                  "type": "number",
+                  "title": "Decimal",
+                },
+                "degrees": {
+                  "type": "number",
+                  "title": "Degrees",
+                },
+                "minutes": {
+                  "type": "number",
+                  "title": "Minutes",
+                },
+                "seconds": {
+                  "type": "number",
+                  "title": "Seconds",
+                },
+              },
+            },
+          },
+        },
+      },
+    }));
+    expect(controllerMapping['coordinates'] is Map, true);
+    expect(controllerMapping['coordinates']?['latitude'] is Map, true);
+    expect(
+        controllerMapping['coordinates']?['latitude']?['decimal']
+            is TextEditingController,
+        true);
+    expect(controllerMapping['coordinates']?['longitude'] is Map, true);
+    expect(
+        controllerMapping['coordinates']?['longitude']?['decimal']
+            is TextEditingController,
+        true);
   });
 }

@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_json_schema_form:
+    path: ../
   json_schema_document:
 
 

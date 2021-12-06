@@ -88,4 +88,56 @@ void main() {
       expect(find.byType(FlutterJsonSchemaFormField), findsNWidgets(2));
     });
   });
+
+  // FlutterJsonSchemaForm + controllers test
+  group('FlutterJsonSchemaForm + controllers test', () {
+    testWidgets(
+        'TextFields should be controllable by FlutterJsonSchemaFormController',
+        (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "object",
+          "title": "Login",
+          "properties": {
+            "username": {
+              "type": "string",
+              "title": "Username",
+            },
+            "password": {
+              "type": "string",
+              "title": "Password",
+            },
+          },
+        },
+      );
+
+      final editingControllerMapping =
+          generateEditingControllerMapping(jsonSchema);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: FlutterJsonSchemaForm.fromJsonSchema(
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(),
+              path: [],
+              editingControllerMapping: editingControllerMapping,
+            ),
+          ),
+        ),
+      );
+
+      final usernameController =
+          editingControllerMapping['username'] as TextEditingController;
+
+      usernameController.value = const TextEditingValue(
+        text: 'User',
+        selection: TextSelection.collapsed(offset: 5),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('User'), findsOneWidget);
+    });
+  });
 }

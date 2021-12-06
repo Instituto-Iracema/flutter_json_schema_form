@@ -88,4 +88,24 @@ void main() {
       expect(find.byType(FlutterJsonSchemaForm), findsOneWidget);
     },
   );
+
+  // TODO: Realocate this test to a more appropriate file, if any
+  group('accessValue tests', () {
+    test('Should be able to access non-nested fields', () {
+      expect(accessValue(['a'], {'a': 'b'}) == 'b', true);
+    });
+
+    test('Should be able to access nested fields', () {
+      expect(
+        accessValue([
+              'a',
+              'b'
+            ], {
+              'a': {'b': 'c'}
+            }) ==
+            'c',
+        true,
+      );
+    });
+  });
 }
