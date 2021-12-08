@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_json_schema_form/controller/flutter_json_schema_form_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -173,5 +175,29 @@ void main() {
         controllerMapping['coordinates']?['longitude']?['decimal']
             is TextEditingController,
         true);
+  });
+
+  // setValue should update a shallow map
+  group('setValue tests', () {
+    test('setValue should update a shallow map', () {
+      final controller = FlutterJsonSchemaFormController(
+          textEditingControllerMapping:
+              generateEditingControllerMapping(JsonSchema.fromMap({
+        "type": "object",
+        "title": "Login",
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username",
+          },
+          "password": {
+            "type": "string",
+            "title": "Password",
+          },
+        },
+      })));
+      controller.setData({'username': 'Elias', 'password': '123'});
+      expect(controller.data['username'], 'Elias');
+    });
   });
 }

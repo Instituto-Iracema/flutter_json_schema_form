@@ -2,8 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:json_schema_document/json_schema_document.dart';
 
 class FlutterJsonSchemaFormController {
+  FlutterJsonSchemaFormController({this.textEditingControllerMapping});
   Map<String, dynamic> data = {};
-  Map<String, dynamic> controllerMapping = {};
+
+  /// If null, the form inner state will be unaccessible.
+  Map<String, dynamic>? textEditingControllerMapping = {};
 
   /// Create or update a value of the key on the specified path.
   void updateValue(List<String> path, String value) {
@@ -31,10 +34,12 @@ class FlutterJsonSchemaFormController {
             // update the value on the data field
             data[p] = value;
             // update or create the controller
-            if (controllerMapping[p] is TextEditingController) {
-              (controllerMapping[p] as TextEditingController).text = value;
-            } else if (controllerMapping[p] == null) {
-              controllerMapping[p] = TextEditingController(text: value);
+            if (textEditingControllerMapping?[p] is TextEditingController) {
+              (textEditingControllerMapping?[p] as TextEditingController).text =
+                  value;
+            } else if (textEditingControllerMapping?[p] == null) {
+              textEditingControllerMapping?[p] =
+                  TextEditingController(text: value);
             }
 
             // if this case isn't the last case, then we need to create de object
@@ -49,14 +54,29 @@ class FlutterJsonSchemaFormController {
         } else {
           data[last]?[p] = value;
           // update or create the controller
-          if (controllerMapping[last]?[p] is TextEditingController) {
-            (controllerMapping[last]?[p] as TextEditingController).text = value;
-          } else if (controllerMapping[last]?[p] == null) {
-            controllerMapping[last]?[p] = TextEditingController(text: value);
+          if (textEditingControllerMapping?[last]?[p]
+              is TextEditingController) {
+            (textEditingControllerMapping?[last]?[p] as TextEditingController)
+                .text = value;
+          } else if (textEditingControllerMapping?[last]?[p] == null) {
+            textEditingControllerMapping?[last]?[p] =
+                TextEditingController(text: value);
           }
         }
       }
     }
+  }
+
+  /// Sets the value of both the instances of textEditingController on the
+  /// textEditingControllerMapping map and the data map.
+  void setData(Map<String, dynamic> newData) {
+    // set the value on the data map
+    data = newData;
+
+    // recursively set the value on the textEditingControllerMapping map
+    data.entries.forEach((entry) {
+      textEditingControllerMapping?[entry.key]?.text = entry.value;
+    });
   }
 }
 

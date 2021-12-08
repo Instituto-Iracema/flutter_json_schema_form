@@ -121,7 +121,6 @@ void main() {
               jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(),
               path: [],
-              editingControllerMapping: editingControllerMapping,
             ),
           ),
         ),
@@ -139,5 +138,54 @@ void main() {
 
       expect(find.text('User'), findsOneWidget);
     });
+
+    // TextFields should be controllable by the setData method
+    testWidgets(
+      "TextFields should be controllable by the setData method",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "Login",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Username",
+              },
+              "password": {
+                "type": "string",
+                "title": "Password",
+              },
+            },
+          },
+        );
+
+        final controller = FlutterJsonSchemaFormController(
+          textEditingControllerMapping:
+              generateEditingControllerMapping(jsonSchema),
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaForm.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                controller: controller,
+                path: [],
+              ),
+            ),
+          ),
+        );
+
+        controller.setData({
+          'username': 'Elias',
+          'password': '123',
+        });
+
+        await tester.pumpAndSettle();
+
+        expect(find.text('Elias'), findsOneWidget);
+      },
+    );
   });
 }
