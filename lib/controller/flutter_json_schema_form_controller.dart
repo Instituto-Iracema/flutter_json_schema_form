@@ -2,11 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:json_schema_document/json_schema_document.dart';
 
 class FlutterJsonSchemaFormController {
-  FlutterJsonSchemaFormController({this.textEditingControllerMapping});
+  FlutterJsonSchemaFormController({required this.jsonSchema}) {
+    textEditingControllerMapping = generateEditingControllerMapping(jsonSchema);
+  }
   Map<String, dynamic> data = {};
+  Map<String, dynamic>? initialState = {};
+  Function(Map<String, dynamic>)? onChanged;
 
   /// If null, the form inner state will be unaccessible.
   Map<String, dynamic>? textEditingControllerMapping = {};
+
+  JsonSchema jsonSchema;
 
   /// Create or update a value of the key on the specified path.
   void updateValue(List<String> path, String value) {
@@ -69,15 +75,55 @@ class FlutterJsonSchemaFormController {
 
   /// Sets the value of both the instances of textEditingController on the
   /// textEditingControllerMapping map and the data map.
-  void setData(Map<String, dynamic> newData) {
-    // set the value on the data map
-    data = newData;
+  void setData(Map<String, dynamic> newData,
+      [Map<String, dynamic>? newTextEditingControllerMapping]) {
+    // final listOfKeys = newData.keys.toList();
 
-    // recursively set the value on the textEditingControllerMapping map
-    data.entries.forEach((entry) {
-      textEditingControllerMapping?[entry.key]?.text = entry.value;
-    });
+    if (newTextEditingControllerMapping == null) {
+      newTextEditingControllerMapping = textEditingControllerMapping;
+      data = newData;
+    }
+
+    // newTextEditingControllerMapping ??= textEditingControllerMapping;
+
+    for (final key in newData.keys) {
+      if (newTextEditingControllerMapping?[key] is Map && newData[key] is Map) {
+        setData(newData[key], newTextEditingControllerMapping?[key]);
+      } else {
+        (newTextEditingControllerMapping?[key] as TextEditingController).text =
+            newData[key];
+      }
+    }
+
+    // for (final entry in newData.entries) {
+    //   final correspondingValueOnTextEditingControllerMapping =
+    //       textEditingControllerMapping?[entry.key];
+    //   if (correspondingValueOnTextEditingControllerMapping
+    //       is TextEditingController) {
+    //     correspondingValueOnTextEditingControllerMapping.text = entry.value;
+    //   }
+    //   if (correspondingValueOnTextEditingControllerMapping is Map) {
+    //     setData(newData[entry.key] as Map<String, dynamic>);
+    //   }
+    // }
   }
+
+//   void setTextEditingControllers(Map<String, dynamic> newData) {
+//     // recursively set the value on the textEditingControllerMapping map
+//     for (var entry in data.entries) {
+//       // if the value is a map, then we need to recursively set the value on the
+//       // ...
+//       if (entry.value is Map &&
+//           textEditingControllerMapping?[entry.key] is Map) {
+//         setTextEditingControllers(entry.value);
+//       }
+//       // else, we need to set the value on the textEditingControllerMapping map
+//       else {
+//         (textEditingControllerMapping?[entry.key] as TextEditingController?)
+//             ?.text = entry.value;
+//       }
+//     }
+//   }
 }
 
 /// Takes as an argument a [JsonSchema] and return a Map<String, dynamic> where

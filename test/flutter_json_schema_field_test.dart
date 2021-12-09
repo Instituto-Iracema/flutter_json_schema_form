@@ -11,17 +11,21 @@ void main() {
   testWidgets(
     'Should render title',
     (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "string",
+          "title": "Username",
+        },
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaFormField.fromJsonSchema(
-              jsonSchema: JsonSchema.fromMap(
-                {
-                  "type": "string",
-                  "title": "Username",
-                },
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(
+                jsonSchema: jsonSchema,
               ),
-              controller: FlutterJsonSchemaFormController(),
               path: [],
             ),
           ),
@@ -35,17 +39,21 @@ void main() {
   testWidgets(
     "Should TextField if type is 'number",
     (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "number",
+          "title": "Age",
+        },
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaFormField.fromJsonSchema(
-              jsonSchema: JsonSchema.fromMap(
-                {
-                  "type": "number",
-                  "title": "Age",
-                },
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(
+                jsonSchema: jsonSchema,
               ),
-              controller: FlutterJsonSchemaFormController(),
               path: [],
             ),
           ),
@@ -59,27 +67,31 @@ void main() {
   testWidgets(
     "Should render an recursive form if the schema's type is 'object'",
     (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "object",
+          "title": "User",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name",
+            },
+            "age": {
+              "type": "integer",
+              "title": "Age",
+            },
+          },
+        },
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaFormField.fromJsonSchema(
-              jsonSchema: JsonSchema.fromMap(
-                {
-                  "type": "object",
-                  "title": "User",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name",
-                    },
-                    "age": {
-                      "type": "integer",
-                      "title": "Age",
-                    },
-                  },
-                },
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(
+                jsonSchema: jsonSchema,
               ),
-              controller: FlutterJsonSchemaFormController(),
               path: [],
             ),
           ),

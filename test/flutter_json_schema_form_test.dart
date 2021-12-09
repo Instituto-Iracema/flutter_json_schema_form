@@ -11,17 +11,21 @@ void main() {
   testWidgets(
     'Should render title',
     (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "object",
+          "title": "Login",
+        },
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: JsonSchema.fromMap(
-                {
-                  "type": "object",
-                  "title": "Login",
-                },
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(
+                jsonSchema: jsonSchema,
               ),
-              controller: FlutterJsonSchemaFormController(),
               path: [],
             ),
           ),
@@ -33,18 +37,22 @@ void main() {
 
   // Should render description
   testWidgets('Should render description', (WidgetTester tester) async {
+    final jsonSchema = JsonSchema.fromMap(
+      {
+        "type": "object",
+        "title": "Login",
+        "description": "Login to the system",
+      },
+    );
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: FlutterJsonSchemaForm.fromJsonSchema(
-            jsonSchema: JsonSchema.fromMap(
-              {
-                "type": "object",
-                "title": "Login",
-                "description": "Login to the system",
-              },
+            jsonSchema: jsonSchema,
+            controller: FlutterJsonSchemaFormController(
+              jsonSchema: jsonSchema,
             ),
-            controller: FlutterJsonSchemaFormController(),
             path: [],
           ),
         ),
@@ -59,27 +67,31 @@ void main() {
     testWidgets(
         'With two properties should render two FlutterJsonSchemaFormField',
         (WidgetTester tester) async {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "object",
+          "title": "Login",
+          "properties": {
+            "username": {
+              "type": "string",
+              "title": "Username",
+            },
+            "password": {
+              "type": "string",
+              "title": "Password",
+            },
+          },
+        },
+      );
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: JsonSchema.fromMap(
-                {
-                  "type": "object",
-                  "title": "Login",
-                  "properties": {
-                    "username": {
-                      "type": "string",
-                      "title": "Username",
-                    },
-                    "password": {
-                      "type": "string",
-                      "title": "Password",
-                    },
-                  },
-                },
+              jsonSchema: jsonSchema,
+              controller: FlutterJsonSchemaFormController(
+                jsonSchema: jsonSchema,
               ),
-              controller: FlutterJsonSchemaFormController(),
               path: [],
             ),
           ),
@@ -111,23 +123,24 @@ void main() {
         },
       );
 
-      final editingControllerMapping =
-          generateEditingControllerMapping(jsonSchema);
+      final controller = FlutterJsonSchemaFormController(
+        jsonSchema: jsonSchema,
+      );
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
               jsonSchema: jsonSchema,
-              controller: FlutterJsonSchemaFormController(),
+              controller: controller,
               path: [],
             ),
           ),
         ),
       );
 
-      final usernameController =
-          editingControllerMapping['username'] as TextEditingController;
+      final usernameController = controller
+          .textEditingControllerMapping?['username'] as TextEditingController;
 
       usernameController.value = const TextEditingValue(
         text: 'User',
@@ -161,8 +174,7 @@ void main() {
         );
 
         final controller = FlutterJsonSchemaFormController(
-          textEditingControllerMapping:
-              generateEditingControllerMapping(jsonSchema),
+          jsonSchema: jsonSchema,
         );
 
         await tester.pumpWidget(
