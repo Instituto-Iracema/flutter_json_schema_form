@@ -86,10 +86,17 @@ class FlutterJsonSchemaFormController {
 
     // newTextEditingControllerMapping ??= textEditingControllerMapping;
 
+    // For each key in the newData map
     for (final key in newData.keys) {
+      // if the values of the corresponding key in the newData map and the newTextEditingControllerMapping are Maps
       if (newTextEditingControllerMapping?[key] is Map && newData[key] is Map) {
+        // then we call setData recursively, passing the maps as parameters
         setData(newData[key], newTextEditingControllerMapping?[key]);
-      } else {
+      }
+      // else, the values should be a String for newData and a TextEditingController for newTextEditingControllerMapping
+      else {
+        // we update the text of the controller found on newTextEditingControllerMapping?[key].text
+        // with the value of the corresponding key in the newData map
         (newTextEditingControllerMapping?[key] as TextEditingController).text =
             newData[key];
       }
