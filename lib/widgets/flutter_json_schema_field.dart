@@ -39,7 +39,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               labelText: title,
             ),
             onChanged: (value) {
-              controller.updateValue(path, value);
+              // controller.updateValue(path, value);
             },
             controller: accessValue(path, editingControllerMapping),
           ),
@@ -53,7 +53,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
             ),
             keyboardType: TextInputType.number,
             onChanged: (value) {
-              controller.updateValue(path, value);
+              // controller.updateValue(path, value);
             },
             controller: accessValue(path, editingControllerMapping),
           ),
@@ -63,9 +63,10 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
         if (listEquals(svgProps, jsonSchema.properties.keys.toList())) {
           return Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(controller.data['svgProp']?['name'] ??
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                    // controller.data['svgProp']?['name'] ??
                     'Importar arquivo'), // Currently not working
               ),
               IconButton(
@@ -83,13 +84,13 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                       final size = file.size;
                       final lastModified =
                           DateTime.now().toUtc().toIso8601String();
-                      controller.data['svgProp'] = {
-                        'name': fileName,
-                        'size': size,
-                        'type': type,
-                        'lastModified': lastModified,
-                        'data': data,
-                      };
+                      // controller.data['svgProp'] = {
+                      //   'name': fileName,
+                      //   'size': size,
+                      //   'type': type,
+                      //   'lastModified': lastModified,
+                      //   'data': data,
+                      // };
                     }
                   } else {
                     // User canceled the picker

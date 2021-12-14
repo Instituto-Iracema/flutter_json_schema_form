@@ -177,12 +177,6 @@ class MyApp extends StatelessWidget {
                   path: [],
                   onSubmit: () {
                     print(controller.data);
-                    controller.setData({
-                      'title': 'Shopping Benfica',
-                      'coordinates': {
-                        'latitude': '-3.741892778701611',
-                      }
-                    });
                   },
                 ),
               ),
