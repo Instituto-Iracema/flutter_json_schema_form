@@ -22,10 +22,10 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(
                 jsonSchema: jsonSchema,
               ),
+              jsonSchema: jsonSchema,
               path: [],
             ),
           ),
@@ -49,10 +49,10 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: FlutterJsonSchemaForm.fromJsonSchema(
-            jsonSchema: jsonSchema,
             controller: FlutterJsonSchemaFormController(
               jsonSchema: jsonSchema,
             ),
+            jsonSchema: jsonSchema,
             path: [],
           ),
         ),
@@ -88,10 +88,10 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(
                 jsonSchema: jsonSchema,
               ),
+              jsonSchema: jsonSchema,
               path: [],
             ),
           ),
@@ -131,9 +131,9 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: FlutterJsonSchemaForm.fromJsonSchema(
-              jsonSchema: jsonSchema,
               controller: controller,
               path: [],
+              jsonSchema: jsonSchema,
             ),
           ),
         ),
@@ -181,9 +181,9 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: FlutterJsonSchemaForm.fromJsonSchema(
-                jsonSchema: jsonSchema,
                 controller: controller,
                 path: [],
+                jsonSchema: jsonSchema,
               ),
             ),
           ),

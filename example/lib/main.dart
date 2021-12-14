@@ -89,7 +89,8 @@ class MyApp extends StatelessWidget {
   static final editingControllerMapping =
       generateEditingControllerMapping(jsonSchema);
   final controller = FlutterJsonSchemaFormController(
-      textEditingControllerMapping: editingControllerMapping);
+    jsonSchema: jsonSchema,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +119,9 @@ class MyApp extends StatelessWidget {
                   onSubmit: () {
                     controller.setData({
                       'title': 'Shopping Benfica',
+                      'coordinates': {
+                        'latitude': '-3.741892778701611',
+                      }
                     });
                   },
                 ),
