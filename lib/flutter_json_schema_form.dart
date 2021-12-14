@@ -18,7 +18,6 @@ class FlutterJsonSchemaForm extends StatelessWidget {
     required this.controller,
     this.onSubmit,
     this.buttonText,
-    this.editingControllerMapping,
   }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -33,8 +32,6 @@ class FlutterJsonSchemaForm extends StatelessWidget {
   final String? buttonText;
 
   final Function? onSubmit;
-
-  final Map<String, dynamic>? editingControllerMapping;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +58,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
                   jsonSchema: entry.value,
                   path: path.isEmpty ? [entry.key] : [...path, entry.key],
                   controller: controller,
-                  editingControllerMapping: editingControllerMapping,
+                  editingControllerMapping:
+                      controller.textEditingControllerMapping,
                 ),
               )
               .toList(),

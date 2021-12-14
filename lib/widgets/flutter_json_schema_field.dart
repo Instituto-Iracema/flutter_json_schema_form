@@ -109,7 +109,6 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                   isInnerField: true,
                   controller: controller,
                   path: path,
-                  editingControllerMapping: editingControllerMapping,
                 ),
               )
             ],

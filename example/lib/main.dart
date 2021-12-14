@@ -145,8 +145,11 @@ class MyApp extends StatelessWidget {
     }
   });
 
-  final editingControllerMapping = generateEditingControllerMapping(jsonSchema);
-  final controller = FlutterJsonSchemaFormController();
+  static final editingControllerMapping =
+      generateEditingControllerMapping(jsonSchema);
+  final controller = FlutterJsonSchemaFormController(
+    jsonSchema: jsonSchema,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -172,11 +175,14 @@ class MyApp extends StatelessWidget {
                   controller: controller,
                   jsonSchema: jsonSchema,
                   path: [],
-                  editingControllerMapping: editingControllerMapping,
                   onSubmit: () {
-                    final test = editingControllerMapping['title']
-                        as TextEditingController;
-                    test.value = TextEditingValue(text: 'teste');
+                    print(controller.data);
+                    controller.setData({
+                      'title': 'Shopping Benfica',
+                      'coordinates': {
+                        'latitude': '-3.741892778701611',
+                      }
+                    });
                   },
                 ),
               ),

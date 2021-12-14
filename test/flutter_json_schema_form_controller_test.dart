@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_json_schema_form/controller/flutter_json_schema_form_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +12,9 @@ void main() {
     test(
         'Should create or update value of the key on the specified path - nesting of level 1',
         () {
-      final controller = FlutterJsonSchemaFormController();
+      final controller = FlutterJsonSchemaFormController(
+        jsonSchema: JsonSchema.fromMap({}),
+      );
       controller.updateValue(['test'], 'testValue');
       expect(controller.data['test'], 'testValue');
       controller.updateValue(['test'], 'testValue2');
@@ -25,7 +30,9 @@ void main() {
     test(
         'Should create or update value of the key on the specified path - nesting of 2 levels',
         () {
-      final controller = FlutterJsonSchemaFormController();
+      final controller = FlutterJsonSchemaFormController(
+        jsonSchema: JsonSchema.fromMap({}),
+      );
       controller.updateValue(['coordinates', 'latitude'], '-23.5');
       expect(controller.data['coordinates']?['latitude'], '-23.5');
     });
@@ -173,5 +180,71 @@ void main() {
         controllerMapping['coordinates']?['longitude']?['decimal']
             is TextEditingController,
         true);
+  });
+
+  // setValue should update a shallow map
+  group('setValue tests', () {
+    test('setValue should update a shallow map', () {
+      final controller = FlutterJsonSchemaFormController(
+        jsonSchema: JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "Login",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Username",
+              },
+              "password": {
+                "type": "string",
+                "title": "Password",
+              },
+            },
+          },
+        ),
+      );
+      controller.setData({
+        'username': 'Elias',
+        'password': '123',
+      });
+      expect(controller.data['username'], 'Elias');
+    });
+
+    test('setValue should update a nested map - level 1', () {
+      final jsonSchema = JsonSchema.fromMap(
+        {
+          "type": "object",
+          "title": "Login",
+          "properties": {
+            "coordinates": {
+              "type": "object",
+              "title": "Coordinates",
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "title": "Latitude",
+                },
+                "longitude": {
+                  "type": "number",
+                  "title": "Longitude",
+                },
+              },
+            },
+          },
+        },
+      );
+
+      final controller =
+          FlutterJsonSchemaFormController(jsonSchema: jsonSchema);
+      controller.setData({
+        'coordinates': {
+          'latitude': '-23.5',
+          'longitude': '-45.6',
+        }
+      });
+
+      expect(controller.data['coordinates']?['latitude'], '-23.5');
+      expect(controller.data['coordinates']?['longitude'], '-45.6');
+    });
   });
 }
