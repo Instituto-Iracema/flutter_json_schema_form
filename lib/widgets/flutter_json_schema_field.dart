@@ -1,5 +1,8 @@
 library flutter_json_schema_form;
 
+import 'dart:convert';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_json_schema_form/controller/flutter_json_schema_form_controller.dart';
 import 'package:flutter_json_schema_form/flutter_json_schema_form.dart';
@@ -56,21 +59,62 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
           ),
         );
       case JsonSchemaType.object:
-        return Column(
-          children: [
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.only(left: 32),
-              child: FlutterJsonSchemaForm.fromJsonSchema(
-                jsonSchema: jsonSchema,
-                isInnerField: true,
-                controller: controller,
-                path: path,
-                editingControllerMapping: editingControllerMapping,
+        final svgProps = ['name', 'size', 'type', 'lastModified', 'data'];
+        if (listEquals(svgProps, jsonSchema.properties.keys.toList())) {
+          return Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(controller.data['svgProp']?['name'] ??
+                    'Importar arquivo'), // Currently not working
               ),
-            )
-          ],
-        );
+              IconButton(
+                icon: const Icon(Icons.upload_file),
+                onPressed: () async {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles();
+                  if (result != null) {
+                    final file = result.files.first;
+                    final extension = file.extension;
+                    if (extension == "svg") {
+                      const type = "image/svg+xml";
+                      final data = base64.encode(file.bytes ?? []);
+                      final fileName = file.name;
+                      final size = file.size;
+                      final lastModified =
+                          DateTime.now().toUtc().toIso8601String();
+                      controller.data['svgProp'] = {
+                        'name': fileName,
+                        'size': size,
+                        'type': type,
+                        'lastModified': lastModified,
+                        'data': data,
+                      };
+                    }
+                  } else {
+                    // User canceled the picker
+                  }
+                },
+              )
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 32),
+                child: FlutterJsonSchemaForm.fromJsonSchema(
+                  jsonSchema: jsonSchema,
+                  isInnerField: true,
+                  controller: controller,
+                  path: path,
+                  editingControllerMapping: editingControllerMapping,
+                ),
+              )
+            ],
+          );
+        }
       default:
         return Container();
     }
