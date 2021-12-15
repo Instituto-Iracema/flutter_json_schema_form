@@ -78,12 +78,13 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                     final file = result.files.first;
                     final extension = file.extension;
                     if (extension == "svg") {
-                      const type = "image/svg+xml";
-                      final data = base64.encode(file.bytes ?? []);
-                      final fileName = file.name;
-                      final size = file.size;
-                      final lastModified =
-                          DateTime.now().toUtc().toIso8601String();
+                      controller.addFile(file);
+                      // const type = "image/svg+xml";
+                      // final data = base64.encode(file.bytes ?? []);
+                      // final fileName = file.name;
+                      // final size = file.size;
+                      // final lastModified =
+                      //     DateTime.now().toUtc().toIso8601String();
                       // controller.data['svgProp'] = {
                       //   'name': fileName,
                       //   'size': size,

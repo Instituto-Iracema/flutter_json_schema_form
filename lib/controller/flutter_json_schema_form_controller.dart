@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_schema_document/json_schema_document.dart';
 
@@ -14,26 +17,64 @@ class FlutterJsonSchemaFormController {
 
   JsonSchema jsonSchema;
 
+  List<PlatformFile> files = [];
+
   Map<String, dynamic> get data => computeData();
 
   Map<String, dynamic> computeData([Map<String, dynamic>? data]) {
+    print(files);
+    if (files.isNotEmpty) {
+      // Picks the first file.
+      final file = files.first;
+      setData({
+        "svgProp": {
+          "type": "image/svg+xml",
+          "size": file.size.toString(),
+          "data": base64.encode(file.bytes ?? []),
+          "lastModified": DateTime.now().toUtc().toIso8601String(),
+          "name": file.name,
+        }
+      });
+    }
+
+    // final fileName = file.name;
+    // final size = file.size;
+    // final lastModified =
+    //     DateTime.now().toUtc().toIso8601String();
+    // controller.data['svgProp'] = {
+    //   'name': fileName,
+    //   'size': size,
+    //   'type': type,
+    //   'lastModified': lastModified,
+    //   'data': data,
+    // };
+
     // get the data to work on
     final actualData = data ?? textEditingControllerMapping;
 
     return actualData.map((key, value) {
       if (value is TextEditingController) {
+        // If the value is empty, we should nullify it
         return value.text.isNotEmpty
             ? MapEntry(key, value.text)
             : MapEntry(key, null);
       } else if (value is Map<String, dynamic>) {
+        // If the value is a map, we should recursively call this function
         return MapEntry(key, computeData(value));
       }
+      // Ideally, we should never reach this point
       return MapEntry(key, "isso não deve acontecer");
     })
+      // Where the value is null, we remove it
       ..removeWhere((key, value) => value == null)
+      // Where the the value is a map, we remove it if it is empty
       ..removeWhere(
         (key, value) => value is Map ? value.isEmpty : false,
       );
+  }
+
+  void addFile(PlatformFile file) {
+    files.add(file);
   }
 
   /// Sets the value of both the instances of textEditingController on the
