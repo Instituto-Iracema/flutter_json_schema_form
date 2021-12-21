@@ -28,6 +28,10 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   String? get title => jsonSchema.title;
 
+  bool get readOnly => jsonSchema.readOnly;
+
+  bool get enabled => !readOnly;
+
   @override
   Widget build(BuildContext context) {
     switch (jsonSchema.type) {
@@ -42,6 +46,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               // controller.updateValue(path, value);
             },
             controller: accessValue(path, editingControllerMapping),
+            readOnly: readOnly,
+            enabled: enabled,
           ),
         );
       case JsonSchemaType.number:
@@ -56,6 +62,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               // controller.updateValue(path, value);
             },
             controller: accessValue(path, editingControllerMapping),
+            readOnly: readOnly,
+            enabled: enabled,
           ),
         );
       case JsonSchemaType.object:

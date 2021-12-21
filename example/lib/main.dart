@@ -52,7 +52,8 @@ class MyApp extends StatelessWidget {
         "title": "Título",
         "description":
             "O título identifica a localidade como ela é chamada no dia a dia",
-        "examples": ["Shopping Benfica"]
+        "examples": ["Shopping Benfica"],
+        "readOnly": true
       },
       "description": {
         "\$id": "#/properties/description",
