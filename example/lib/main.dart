@@ -181,6 +181,17 @@ class MyApp extends StatelessWidget {
                   },
                 ),
               ),
+              Expanded(
+                child: FlutterJsonSchemaForm.fromJsonSchema(
+                  disabled: true,
+                  controller: controller,
+                  jsonSchema: jsonSchema,
+                  path: [],
+                  onSubmit: () {
+                    print(controller.data);
+                  },
+                ),
+              ),
               Spacer(),
             ],
           ),

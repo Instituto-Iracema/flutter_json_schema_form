@@ -15,6 +15,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
     required this.jsonSchema,
     required this.path,
     required this.controller,
+    this.forceDisabled = false,
     this.editingControllerMapping,
   }) : super(key: key);
 
@@ -26,9 +27,11 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   final List<String> path;
 
+  final bool forceDisabled;
+
   String? get title => jsonSchema.title;
 
-  bool get readOnly => jsonSchema.readOnly;
+  bool get readOnly => forceDisabled ? true : jsonSchema.readOnly;
 
   bool get enabled => !readOnly;
 
@@ -119,6 +122,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                   isInnerField: true,
                   controller: controller,
                   path: path,
+                  disabled: forceDisabled,
                 ),
               )
             ],

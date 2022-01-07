@@ -200,4 +200,102 @@ void main() {
       },
     );
   });
+
+  group("test disable property", () {
+    testWidgets(
+      "If disabled property is true, all TextField should be disabled",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "Login",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Username",
+              },
+              "password": {
+                "type": "string",
+                "title": "Password",
+              },
+            },
+          },
+        );
+
+        final controller = FlutterJsonSchemaFormController(
+          jsonSchema: jsonSchema,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaForm.fromJsonSchema(
+                controller: controller,
+                path: [],
+                jsonSchema: jsonSchema,
+                disabled: true,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(FlutterJsonSchemaFormField);
+        final listOfWidgets = finder.evaluate().toList();
+        final forceDisabledProps = listOfWidgets.map((element) {
+          return (element.widget as FlutterJsonSchemaFormField).forceDisabled;
+        }).toList();
+        final isAllDisabled =
+            forceDisabledProps.every((element) => element == true);
+        expect(isAllDisabled, true);
+      },
+    );
+
+    testWidgets(
+      "If disabled property is false, all TextField should follow the schema",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "Login",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Username",
+                "readOnly": true,
+              },
+              "password": {
+                "type": "string",
+                "title": "Password",
+              },
+            },
+          },
+        );
+
+        final controller = FlutterJsonSchemaFormController(
+          jsonSchema: jsonSchema,
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaForm.fromJsonSchema(
+                controller: controller,
+                path: [],
+                jsonSchema: jsonSchema,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(FlutterJsonSchemaFormField);
+        final listOfWidgets = finder.evaluate().toList();
+        final forceDisabledProps = listOfWidgets.map((element) {
+          return (element.widget as FlutterJsonSchemaFormField).forceDisabled;
+        }).toList();
+        final isntAllDisabled =
+            forceDisabledProps.every((element) => element == false);
+        expect(isntAllDisabled, true);
+      },
+    );
+  });
 }

@@ -101,6 +101,163 @@ void main() {
     },
   );
 
+  group('Testing forceDisabled property', () {
+    testWidgets(
+      "When forceDisabled is true and schema's readOnly is false, should disable the field",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "User",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "readOnly": false,
+              },
+            },
+          },
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaFormField.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                controller: FlutterJsonSchemaFormController(
+                  jsonSchema: jsonSchema,
+                ),
+                path: [],
+                forceDisabled: true,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(TextField);
+        var textField = finder.evaluate().single.widget as TextField;
+        expect(textField.enabled, false);
+        expect(textField.readOnly, true);
+      },
+    );
+    testWidgets(
+      "When forceDisabled is true and schema's readOnly is true, should disable the field",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "User",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "readOnly": true,
+              },
+            },
+          },
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaFormField.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                controller: FlutterJsonSchemaFormController(
+                  jsonSchema: jsonSchema,
+                ),
+                path: [],
+                forceDisabled: true,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(TextField);
+        var textField = finder.evaluate().single.widget as TextField;
+        expect(textField.enabled, false);
+        expect(textField.readOnly, true);
+      },
+    );
+
+    testWidgets(
+      "When forceDisabled is false and schema's readOnly is false, should not disable the field",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "User",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "readOnly": false,
+              },
+            },
+          },
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaFormField.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                controller: FlutterJsonSchemaFormController(
+                  jsonSchema: jsonSchema,
+                ),
+                path: [],
+                forceDisabled: false,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(TextField);
+        var textField = finder.evaluate().single.widget as TextField;
+        expect(textField.enabled, true);
+        expect(textField.readOnly, false);
+      },
+    );
+
+    testWidgets(
+      "When forceDisabled is false and schema's readOnly is true, should disable the field",
+      (WidgetTester tester) async {
+        final jsonSchema = JsonSchema.fromMap(
+          {
+            "type": "object",
+            "title": "User",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "readOnly": true,
+              },
+            },
+          },
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FlutterJsonSchemaFormField.fromJsonSchema(
+                jsonSchema: jsonSchema,
+                controller: FlutterJsonSchemaFormController(
+                  jsonSchema: jsonSchema,
+                ),
+                path: [],
+                forceDisabled: false,
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byType(TextField);
+        var textField = finder.evaluate().single.widget as TextField;
+        expect(textField.enabled, false);
+        expect(textField.readOnly, true);
+      },
+    );
+  });
+
   // TODO: Realocate this test to a more appropriate file, if any
   group('accessValue tests', () {
     test('Should be able to access non-nested fields', () {
