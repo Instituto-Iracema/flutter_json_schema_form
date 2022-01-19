@@ -19,6 +19,7 @@ class FlutterJsonSchemaForm extends StatelessWidget {
     this.onSubmit,
     this.buttonText,
     this.disabled = false,
+    this.fileWidget,
   }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -35,6 +36,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
   final Function? onSubmit;
 
   final bool disabled;
+
+  final Widget? fileWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,7 @@ class FlutterJsonSchemaForm extends StatelessWidget {
           ...jsonSchema.properties.entries
               .map(
                 (entry) => FlutterJsonSchemaFormField.fromJsonSchema(
+                  fileWidget: fileWidget,
                   forceDisabled: disabled,
                   jsonSchema: entry.value,
                   path: path.isEmpty ? [entry.key] : [...path, entry.key],

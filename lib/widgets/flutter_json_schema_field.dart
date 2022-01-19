@@ -17,6 +17,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
     required this.controller,
     this.forceDisabled = false,
     this.editingControllerMapping,
+    this.fileWidget,
   }) : super(key: key);
 
   final JsonSchema jsonSchema;
@@ -28,6 +29,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
   final List<String> path;
 
   final bool forceDisabled;
+
+  final Widget? fileWidget;
 
   String? get title => jsonSchema.title;
 
@@ -107,40 +110,41 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
       case JsonSchemaType.object:
         final svgProps = ['name', 'size', 'type', 'lastModified', 'data'];
         if (listEquals(svgProps, jsonSchema.properties.keys.toList())) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    title ?? 'File',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                        onPressed: forceDisabled ? null : onUpload,
-                        child: Row(children: [
-                          controller.data['svgProp'] == null
-                              ? Icon(Icons.file_upload)
-                              : Icon(Icons.delete),
-                          controller.data['svgProp'] == null
-                              ? Text('Importar')
-                              : Text('Remover'),
-                        ])),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(controller.data['svgProp']?['name'] ??
-                          'Nenhum arquivo'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
+          return fileWidget ?? Container();
+          // return Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Padding(
+          //         padding: const EdgeInsets.only(bottom: 8.0),
+          //         child: Text(
+          //           title ?? 'File',
+          //           style: const TextStyle(fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //       Row(
+          //         children: [
+          //           ElevatedButton(
+          //               onPressed: forceDisabled ? null : onUpload,
+          //               child: Row(children: [
+          //                 controller.data['svgProp'] == null
+          //                     ? Icon(Icons.file_upload)
+          //                     : Icon(Icons.delete),
+          //                 controller.data['svgProp'] == null
+          //                     ? Text('Importar')
+          //                     : Text('Remover'),
+          //               ])),
+          //           Padding(
+          //             padding: const EdgeInsets.all(8.0),
+          //             child: Text(controller.data['svgProp']?['name'] ??
+          //                 'Nenhum arquivo'),
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // );
         } else {
           return Column(
             children: [

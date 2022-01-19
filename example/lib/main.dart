@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
     "required": ["title", "maps_zoom", "description", "coordinates"],
     "properties": {
       "svgProp": {
-        "\$id": "#/properties/svgProps",
         "type": "object",
         "title": "I'm a file as an object with base64 data",
         "contentMediaType": "image/svg+xml",
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
           "type": {"type": "string"},
           "lastModified": {"type": "string", "format": "date-time"},
           "data": {"type": "string"}
-        }
+        },
       },
       "title": {
         "\$id": "#/properties/title",
@@ -52,8 +51,7 @@ class MyApp extends StatelessWidget {
         "title": "Título",
         "description":
             "O título identifica a localidade como ela é chamada no dia a dia",
-        "examples": ["Shopping Benfica"],
-        "readOnly": true
+        "examples": ["Shopping Benfica"]
       },
       "description": {
         "\$id": "#/properties/description",
@@ -99,18 +97,18 @@ class MyApp extends StatelessWidget {
             "description":
                 "A longitude é a distância ao meridiano de Greenwich medida ao longo do Equador.",
             "examples": [-38.53730096034952]
-          }
-        }
-      }
+          },
+        },
+      },
     },
     "userInterface": {
       "flutter": {
         "preferredDisplay": "widgets:collection",
         "maps": {
           "childrenRepresentableAsMarkers": [
-            "beacon",
-            "pointOfInterest",
-            "location"
+            'beacon',
+            'pointOfInterest',
+            'location'
           ]
         }
       },
