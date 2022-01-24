@@ -18,6 +18,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
     this.forceDisabled = false,
     this.editingControllerMapping,
     this.fileWidget,
+    this.selectedFieldsCorrespondingToEnumFields = const {},
+    this.onSelectedFieldOnEnumField,
   }) : super(key: key);
 
   final JsonSchema jsonSchema;
@@ -38,6 +40,10 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   bool get enabled => !readOnly;
 
+  final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
+
+  final Function(dynamic)? onSelectedFieldOnEnumField;
+
   Future<void> onUpload() async {
     // print(controller.data['svgProp']);
     final svgProp = controller.data['svgProp'];
@@ -54,19 +60,6 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
       final extension = file.extension;
       if (extension == "svg") {
         controller.addFile(file);
-        // const type = "image/svg+xml";
-        // final data = base64.encode(file.bytes ?? []);
-        // final fileName = file.name;
-        // final size = file.size;
-        // final lastModified =
-        //     DateTime.now().toUtc().toIso8601String();
-        // controller.data['svgProp'] = {
-        //   'name': fileName,
-        //   'size': size,
-        //   'type': type,
-        //   'lastModified': lastModified,
-        //   'data': data,
-        // };
       }
     } else {
       // User canceled the picker
@@ -77,6 +70,30 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (jsonSchema.type) {
       case JsonSchemaType.string:
+        if (jsonSchema.enum_ != null) {
+          return DropdownButton<String>(
+            value: accessValue(
+              path,
+              selectedFieldsCorrespondingToEnumFields,
+            ) is String
+                ? accessValue(
+                    path,
+                    selectedFieldsCorrespondingToEnumFields,
+                  )
+                : null,
+            onChanged: onSelectedFieldOnEnumField,
+            items: jsonSchema.enum_
+                ?.map(
+                  (e) => DropdownMenuItem<String>(
+                    child: Text(e),
+                    value: e as String,
+                    onTap: () {},
+                  ),
+                )
+                .toList(),
+          );
+        }
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: TextField(

@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:json_schema_document/json_schema_document.dart';
 
 class FlutterJsonSchemaFormController {
-  FlutterJsonSchemaFormController({required this.jsonSchema}) {
+  FlutterJsonSchemaFormController({
+    required this.jsonSchema,
+    this.selectedFieldsCorrespondingToEnumFields = const {},
+  }) {
     textEditingControllerMapping = generateEditingControllerMapping(jsonSchema);
   }
   // Map<String, dynamic> data = {};
@@ -18,6 +21,8 @@ class FlutterJsonSchemaFormController {
   JsonSchema jsonSchema;
 
   List<PlatformFile> files = [];
+
+  Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
 
   Map<String, dynamic> get data => computeData();
 
@@ -37,17 +42,7 @@ class FlutterJsonSchemaFormController {
       });
     }
 
-    // final fileName = file.name;
-    // final size = file.size;
-    // final lastModified =
-    //     DateTime.now().toUtc().toIso8601String();
-    // controller.data['svgProp'] = {
-    //   'name': fileName,
-    //   'size': size,
-    //   'type': type,
-    //   'lastModified': lastModified,
-    //   'data': data,
-    // };
+    setData(selectedFieldsCorrespondingToEnumFields);
 
     // get the data to work on
     final actualData = data ?? textEditingControllerMapping;
@@ -107,36 +102,7 @@ class FlutterJsonSchemaFormController {
             newData[key];
       }
     }
-
-    // for (final entry in newData.entries) {
-    //   final correspondingValueOnTextEditingControllerMapping =
-    //       textEditingControllerMapping?[entry.key];
-    //   if (correspondingValueOnTextEditingControllerMapping
-    //       is TextEditingController) {
-    //     correspondingValueOnTextEditingControllerMapping.text = entry.value;
-    //   }
-    //   if (correspondingValueOnTextEditingControllerMapping is Map) {
-    //     setData(newData[entry.key] as Map<String, dynamic>);
-    //   }
-    // }
   }
-
-//   void setTextEditingControllers(Map<String, dynamic> newData) {
-//     // recursively set the value on the textEditingControllerMapping map
-//     for (var entry in data.entries) {
-//       // if the value is a map, then we need to recursively set the value on the
-//       // ...
-//       if (entry.value is Map &&
-//           textEditingControllerMapping?[entry.key] is Map) {
-//         setTextEditingControllers(entry.value);
-//       }
-//       // else, we need to set the value on the textEditingControllerMapping map
-//       else {
-//         (textEditingControllerMapping?[entry.key] as TextEditingController?)
-//             ?.text = entry.value;
-//       }
-//     }
-//   }
 }
 
 /// Takes as an argument a [JsonSchema] and return a Map<String, dynamic> where

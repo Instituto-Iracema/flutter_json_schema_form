@@ -14,133 +14,31 @@ class MyApp extends StatelessWidget {
     "\$schema": "http://json-schema.org/draft-07/schema",
     "\$id": "http://example.com/example.json",
     "type": "object",
-    "title": "Localidade Acessível",
-    "maps_zoom": 3,
-    "description":
-        "Uma Localidade Acessível é capaz de assistir pessoas com deficiência visual através da infraestrutura BlindNavInd.",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
     "examples": [
-      {
-        "title": "Shopping Benfica",
-        "description":
-            "É um dos Shoppings mais conhecidos da cidade. Apesar de pequeno, alguns consideram-o aconchegante.",
-        "maps_zoom": 3,
-        "coordinates": {
-          "latitude": -3.741892778701611,
-          "longitude": -38.53730096034952
-        }
-      }
+      {"name": "Casa 12", "propertyType": "House"}
     ],
-    "required": ["title", "maps_zoom", "description", "coordinates"],
+    "required": ["name", "propertyType"],
     "properties": {
-      "svgProp": {
-        "type": "object",
-        "title": "I'm a file as an object with base64 data",
-        "contentMediaType": "image/svg+xml",
-        "writeOnly": true,
-        "properties": {
-          "name": {"type": "string"},
-          "size": {"type": "number"},
-          "type": {"type": "string"},
-          "lastModified": {"type": "string", "format": "date-time"},
-          "data": {"type": "string"}
-        },
-      },
-      "title": {
-        "\$id": "#/properties/title",
+      "name": {
+        "\$id": "#/properties/name",
         "type": "string",
-        "title": "Título",
-        "description":
-            "O título identifica a localidade como ela é chamada no dia a dia",
-        "examples": ["Shopping Benfica"]
+        "title": "The name schema",
+        "description": "An explanation about the purpose of this instance.",
+        "default": "",
+        "examples": ["Casa 12"]
       },
-      "description": {
-        "\$id": "#/properties/description",
-        "type": "string",
-        "title": "Descrição",
-        "description":
-            "A descrição traz informações úteis e curiosidades sobre a localidade.",
-        "examples": [
-          "É um dos Shoppings mais conhecidos da cidade. Apesar de pequeno, alguns consideram-o aconchegante."
-        ]
-      },
-      "maps_zoom": {
-        "\$id": "#/properties/maps-zoom",
-        "type": "number",
-        "title": "maps_zoom",
-        "description":
-            "A descrição traz informações úteis e curiosidades sobre a localidade.",
-        "examples": [3]
-      },
-      "coordinates": {
-        "\$id": "#/properties/coordinates",
-        "type": "object",
-        "title": "Coordenadas Geográficas",
-        "description":
-            "Elas permitem a localização da localidade no mapa mundi.",
-        "examples": [
-          {"latitude": -3.741892778701611, "longitude": -38.53730096034952}
-        ],
-        "required": ["latitude", "longitude"],
-        "properties": {
-          "latitude": {
-            "\$id": "#/properties/coordinates/properties/latitude",
-            "type": "number",
-            "title": "Latitude",
-            "description":
-                "A latitude é a distância ao Equador medida ao longo do meridiano de Greenwich. Esta distância mede-se em graus, podendo variar entre 0º e 90º para Norte(N) ou para Sul(S).",
-            "examples": [-3.741892778701611]
-          },
-          "longitude": {
-            "\$id": "#/properties/coordinates/properties/longitude",
-            "type": "number",
-            "title": "Longitude",
-            "description":
-                "A longitude é a distância ao meridiano de Greenwich medida ao longo do Equador.",
-            "examples": [-38.53730096034952]
-          },
-        },
-      },
-    },
-    "userInterface": {
-      "flutter": {
-        "preferredDisplay": "widgets:collection",
-        "maps": {
-          "childrenRepresentableAsMarkers": [
-            'beacon',
-            'pointOfInterest',
-            'location'
-          ]
-        }
-      },
-      "material-ui": {
-        "dataGrid": {
-          "columns": [
-            {"field": "nome", "headerName": "Nome", "flex": 2},
-            {"field": "tipoUsuario", "headerName": "Tipo de Usuário", "flex": 1}
-          ]
-        }
-      },
-      "vuetify": {
-        "dataTable": {
-          "headers": [
-            {"text": "Título", "align": "start", "value": "title"},
-            {"text": "Descrição", "value": "description", "filterable": false},
-            {
-              "text": "Actions",
-              "value": "actions",
-              "align": "center",
-              "sortable": false
-            }
-          ]
-        },
-        "preferredDisplay": "widgets:table"
-      },
-      "negociableAs": [
-        "application/json+hal",
-        "text/csv",
-        "text/txt",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ]
+      "propertyType": {
+        "\$id": "#/properties/propertyType",
+        "default": "",
+        "description": "An explanation about the purpose of this instance.",
+        "examples": ["House"],
+        "title": "The propertyType schema",
+        "enum": ["House", "Apartment"],
+        "type": "string"
+      }
     }
   });
 
@@ -148,6 +46,7 @@ class MyApp extends StatelessWidget {
       generateEditingControllerMapping(jsonSchema);
   final controller = FlutterJsonSchemaFormController(
     jsonSchema: jsonSchema,
+    selectedFieldsCorrespondingToEnumFields: {"propertyType": "Apartment"},
   );
 
   @override
@@ -177,17 +76,11 @@ class MyApp extends StatelessWidget {
                   onSubmit: () {
                     print(controller.data);
                   },
-                ),
-              ),
-              Expanded(
-                child: FlutterJsonSchemaForm.fromJsonSchema(
-                  disabled: true,
-                  controller: controller,
-                  jsonSchema: jsonSchema,
-                  path: [],
-                  onSubmit: () {
-                    print(controller.data);
+                  selectedFieldsCorrespondingToEnumFields: {
+                    "propertyType": "Apartment",
                   },
+                  onSelectedFieldOnEnumField: (selectedField) =>
+                      print("Selected field on enum field: $selectedField"),
                 ),
               ),
               Spacer(),

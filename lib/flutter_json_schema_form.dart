@@ -20,6 +20,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
     this.buttonText,
     this.disabled = false,
     this.fileWidget,
+    this.selectedFieldsCorrespondingToEnumFields = const {},
+    this.onSelectedFieldOnEnumField,
   }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -38,6 +40,10 @@ class FlutterJsonSchemaForm extends StatelessWidget {
   final bool disabled;
 
   final Widget? fileWidget;
+
+  final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
+
+  final Function(dynamic)? onSelectedFieldOnEnumField;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +74,9 @@ class FlutterJsonSchemaForm extends StatelessWidget {
                   controller: controller,
                   editingControllerMapping:
                       controller.textEditingControllerMapping,
+                  selectedFieldsCorrespondingToEnumFields:
+                      selectedFieldsCorrespondingToEnumFields,
+                  onSelectedFieldOnEnumField: onSelectedFieldOnEnumField,
                 ),
               )
               .toList(),
