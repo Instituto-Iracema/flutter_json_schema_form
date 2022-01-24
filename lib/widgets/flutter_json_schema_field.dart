@@ -42,7 +42,7 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
 
-  final Function(dynamic)? onSelectedFieldOnEnumField;
+  final Function(dynamic, dynamic)? onSelectedFieldOnEnumField;
 
   Future<void> onUpload() async {
     // print(controller.data['svgProp']);
@@ -81,7 +81,24 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                     selectedFieldsCorrespondingToEnumFields,
                   )
                 : null,
-            onChanged: onSelectedFieldOnEnumField,
+            onChanged: (changeResult) {
+              // field was selected at path
+              // We should tell the higher level controller that we have selected a field
+
+              final correspondingTextEditingController =
+                  accessValue(path, editingControllerMapping);
+
+              print(
+                  "correspondingTextEditingController: $correspondingTextEditingController");
+
+              if (correspondingTextEditingController is TextEditingController) {
+                correspondingTextEditingController.text = changeResult ?? "";
+              }
+
+              if (onSelectedFieldOnEnumField != null) {
+                onSelectedFieldOnEnumField!(path, changeResult);
+              }
+            },
             items: jsonSchema.enum_
                 ?.map(
                   (e) => DropdownMenuItem<String>(

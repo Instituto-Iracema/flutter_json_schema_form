@@ -43,7 +43,7 @@ class FlutterJsonSchemaForm extends StatelessWidget {
 
   final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
 
-  final Function(dynamic)? onSelectedFieldOnEnumField;
+  final Function(dynamic, dynamic)? onSelectedFieldOnEnumField;
 
   @override
   Widget build(BuildContext context) {
