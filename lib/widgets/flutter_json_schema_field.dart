@@ -44,6 +44,32 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   final Function(dynamic)? onChanged;
 
+  _onChanged(changeResult) {
+    // field was selected at path
+    // We should tell the higher level controller that we have selected a field
+
+    final correspondingTextEditingController =
+        accessValue(path, editingControllerMapping);
+
+    if (correspondingTextEditingController is TextEditingController) {
+      correspondingTextEditingController.text = changeResult ?? "";
+    }
+
+    if (onChanged != null) {
+      onChanged!(controller.data);
+    }
+  }
+
+  get _enumToSelectItems => jsonSchema.enum_
+      ?.map(
+        (e) => DropdownMenuItem<String>(
+          child: Text(e),
+          value: e as String,
+          onTap: () {},
+        ),
+      )
+      .toList();
+
   Future<void> onUpload() async {
     final svgProp = controller.data['svgProp'];
     if (svgProp != null) {
@@ -69,40 +95,27 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
     switch (jsonSchema.type) {
       case JsonSchemaType.string:
         if (jsonSchema.enum_ != null) {
-          return DropdownButton<String>(
-            value: accessValue(
-              path,
-              formState,
-            ) is String
-                ? accessValue(
+          return Row(
+            children: [
+              Text("${jsonSchema.title ?? ""} :"),
+              const SizedBox(width: 12),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: DropdownButton<String>(
+                  value: accessValue(
                     path,
                     formState,
-                  )
-                : null,
-            onChanged: (changeResult) {
-              // field was selected at path
-              // We should tell the higher level controller that we have selected a field
-
-              final correspondingTextEditingController =
-                  accessValue(path, editingControllerMapping);
-
-              if (correspondingTextEditingController is TextEditingController) {
-                correspondingTextEditingController.text = changeResult ?? "";
-              }
-
-              if (onChanged != null) {
-                onChanged!(controller.data);
-              }
-            },
-            items: jsonSchema.enum_
-                ?.map(
-                  (e) => DropdownMenuItem<String>(
-                    child: Text(e),
-                    value: e as String,
-                    onTap: () {},
-                  ),
-                )
-                .toList(),
+                  ) is String
+                      ? accessValue(
+                          path,
+                          formState,
+                        )
+                      : null,
+                  onChanged: _onChanged,
+                  items: _enumToSelectItems,
+                ),
+              ),
+            ],
           );
         }
 
@@ -121,6 +134,24 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
           ),
         );
       case JsonSchemaType.number:
+        if (jsonSchema.enum_ != null) {
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: DropdownButton<num>(
+              value: accessValue(
+                path,
+                formState,
+              ) is String
+                  ? accessValue(
+                      path,
+                      formState,
+                    )
+                  : null,
+              onChanged: _onChanged,
+              items: _enumToSelectItems,
+            ),
+          );
+        }
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: TextField(
@@ -188,7 +219,6 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
                   disabled: forceDisabled,
                   onChanged: onChanged,
                   formState: formState,
-                  onSubmit: () {},
                 ),
               )
             ],

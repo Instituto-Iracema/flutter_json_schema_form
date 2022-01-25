@@ -20,8 +20,6 @@ class _MyAppWithStateState extends State<MyAppWithState> {
     "propertyType": "Apartment",
   };
 
-  static final editingControllerMapping =
-      generateEditingControllerMapping(jsonSchema);
   final controller = FlutterJsonSchemaFormController(
     jsonSchema: jsonSchema,
   );
@@ -48,7 +46,7 @@ class _MyAppWithStateState extends State<MyAppWithState> {
               Expanded(
                 child: FlutterJsonSchemaForm(
                   controller: controller,
-                  jsonSchema: jsonSchema,
+                  jsonSchema: controller.jsonSchema,
                   formState: formState,
                   onSubmit: () {
                     print(controller.data);
@@ -94,7 +92,7 @@ final jsonSchema = JsonSchema.fromMap({
       "default": "",
       "description": "An explanation about the purpose of this instance.",
       "examples": ["House"],
-      "title": "The propertyType schema",
+      "title": "Tipo de Propriedade 1",
       "enum": ["House", "Apartment", "Flat", "Townhouse"],
       "type": "string"
     },
@@ -109,7 +107,7 @@ final jsonSchema = JsonSchema.fromMap({
           "default": "",
           "description": "An explanation about the purpose of this instance.",
           "examples": ["House"],
-          "title": "The propertyType schema",
+          "title": "Tipo de Propriedade 2",
           "enum": ["House", "Apartment", "Flat", "Townhouse"],
           "type": "string"
         },

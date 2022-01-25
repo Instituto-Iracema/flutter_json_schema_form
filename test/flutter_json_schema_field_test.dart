@@ -21,7 +21,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: FlutterJsonSchemaFormField.fromJsonSchema(
+            body: FlutterJsonSchemaFormField(
               jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(
                 jsonSchema: jsonSchema,
@@ -49,7 +49,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: FlutterJsonSchemaFormField.fromJsonSchema(
+            body: FlutterJsonSchemaFormField(
               jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(
                 jsonSchema: jsonSchema,
@@ -87,7 +87,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: FlutterJsonSchemaFormField.fromJsonSchema(
+            body: FlutterJsonSchemaFormField(
               jsonSchema: jsonSchema,
               controller: FlutterJsonSchemaFormController(
                 jsonSchema: jsonSchema,
@@ -122,7 +122,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlutterJsonSchemaFormField.fromJsonSchema(
+              body: FlutterJsonSchemaFormField(
                 jsonSchema: jsonSchema,
                 controller: FlutterJsonSchemaFormController(
                   jsonSchema: jsonSchema,
@@ -160,7 +160,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlutterJsonSchemaFormField.fromJsonSchema(
+              body: FlutterJsonSchemaFormField(
                 jsonSchema: jsonSchema,
                 controller: FlutterJsonSchemaFormController(
                   jsonSchema: jsonSchema,
@@ -199,7 +199,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlutterJsonSchemaFormField.fromJsonSchema(
+              body: FlutterJsonSchemaFormField(
                 jsonSchema: jsonSchema,
                 controller: FlutterJsonSchemaFormController(
                   jsonSchema: jsonSchema,
@@ -238,7 +238,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlutterJsonSchemaFormField.fromJsonSchema(
+              body: FlutterJsonSchemaFormField(
                 jsonSchema: jsonSchema,
                 controller: FlutterJsonSchemaFormController(
                   jsonSchema: jsonSchema,
