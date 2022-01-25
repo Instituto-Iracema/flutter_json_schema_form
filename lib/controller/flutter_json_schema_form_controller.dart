@@ -7,7 +7,6 @@ import 'package:json_schema_document/json_schema_document.dart';
 class FlutterJsonSchemaFormController {
   FlutterJsonSchemaFormController({
     required this.jsonSchema,
-    this.selectedFieldsCorrespondingToEnumFields = const {},
   }) {
     textEditingControllerMapping = generateEditingControllerMapping(jsonSchema);
   }
@@ -22,12 +21,9 @@ class FlutterJsonSchemaFormController {
 
   List<PlatformFile> files = [];
 
-  Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
-
   Map<String, dynamic> get data => computeData();
 
   Map<String, dynamic> computeData([Map<String, dynamic>? data]) {
-    print(files);
     if (files.isNotEmpty) {
       // Picks the first file.
       final file = files.first;
@@ -41,8 +37,6 @@ class FlutterJsonSchemaFormController {
         }
       });
     }
-
-    setData(selectedFieldsCorrespondingToEnumFields);
 
     // get the data to work on
     final actualData = data ?? textEditingControllerMapping;

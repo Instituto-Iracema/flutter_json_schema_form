@@ -10,7 +10,7 @@ import 'package:json_schema_document/json_schema_document.dart';
 
 /// A FormField generated from a JSON Schema property.
 class FlutterJsonSchemaFormField extends StatelessWidget {
-  const FlutterJsonSchemaFormField.fromJsonSchema({
+  const FlutterJsonSchemaFormField({
     Key? key,
     required this.jsonSchema,
     required this.path,
@@ -18,8 +18,8 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
     this.forceDisabled = false,
     this.editingControllerMapping,
     this.fileWidget,
-    this.selectedFieldsCorrespondingToEnumFields = const {},
-    this.onSelectedFieldOnEnumField,
+    this.formState = const {},
+    this.onChanged,
   }) : super(key: key);
 
   final JsonSchema jsonSchema;
@@ -40,12 +40,11 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
 
   bool get enabled => !readOnly;
 
-  final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
+  final Map<String, dynamic> formState;
 
-  final Function(dynamic, dynamic)? onSelectedFieldOnEnumField;
+  final Function(dynamic)? onChanged;
 
   Future<void> onUpload() async {
-    // print(controller.data['svgProp']);
     final svgProp = controller.data['svgProp'];
     if (svgProp != null) {
       final newData = controller.data;
@@ -53,7 +52,6 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
       controller.setData(newData);
       return;
     }
-    // print(controller.data[pa])
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       final file = result.files.first;
@@ -74,11 +72,11 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
           return DropdownButton<String>(
             value: accessValue(
               path,
-              selectedFieldsCorrespondingToEnumFields,
+              formState,
             ) is String
                 ? accessValue(
                     path,
-                    selectedFieldsCorrespondingToEnumFields,
+                    formState,
                   )
                 : null,
             onChanged: (changeResult) {
@@ -88,15 +86,12 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               final correspondingTextEditingController =
                   accessValue(path, editingControllerMapping);
 
-              print(
-                  "correspondingTextEditingController: $correspondingTextEditingController");
-
               if (correspondingTextEditingController is TextEditingController) {
                 correspondingTextEditingController.text = changeResult ?? "";
               }
 
-              if (onSelectedFieldOnEnumField != null) {
-                onSelectedFieldOnEnumField!(path, changeResult);
+              if (onChanged != null) {
+                onChanged!(controller.data);
               }
             },
             items: jsonSchema.enum_
@@ -185,12 +180,15 @@ class FlutterJsonSchemaFormField extends StatelessWidget {
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.only(left: 32),
-                child: FlutterJsonSchemaForm.fromJsonSchema(
+                child: FlutterJsonSchemaForm(
                   jsonSchema: jsonSchema,
                   isInnerField: true,
                   controller: controller,
                   path: path,
                   disabled: forceDisabled,
+                  onChanged: onChanged,
+                  formState: formState,
+                  onSubmit: () {},
                 ),
               )
             ],

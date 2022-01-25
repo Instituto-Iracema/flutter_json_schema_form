@@ -180,7 +180,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
-              body: FlutterJsonSchemaForm.fromJsonSchema(
+              body: FlutterJsonSchemaForm(
                 controller: controller,
                 path: [],
                 jsonSchema: jsonSchema,

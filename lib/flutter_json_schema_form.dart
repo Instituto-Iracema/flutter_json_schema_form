@@ -10,18 +10,18 @@ import 'controller/flutter_json_schema_form_controller.dart';
 
 /// A widget that displays a form based on a JSON Schema.
 class FlutterJsonSchemaForm extends StatelessWidget {
-  const FlutterJsonSchemaForm.fromJsonSchema({
+  const FlutterJsonSchemaForm({
     Key? key,
     required this.jsonSchema,
-    this.isInnerField = false,
-    required this.path,
     required this.controller,
-    this.onSubmit,
     this.buttonText,
-    this.disabled = false,
     this.fileWidget,
-    this.selectedFieldsCorrespondingToEnumFields = const {},
-    this.onSelectedFieldOnEnumField,
+    this.onSubmit,
+    this.onChanged,
+    this.isInnerField = false,
+    this.disabled = false,
+    this.path = const [],
+    this.formState = const {},
   }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -29,21 +29,30 @@ class FlutterJsonSchemaForm extends StatelessWidget {
 
   final bool isInnerField;
 
+  /// Controller to use to manage the form.
   final FlutterJsonSchemaFormController controller;
 
+  /// List of keys that must be followed to find this form on a nested form. \
+  /// For the root form on an nested form structure, it is usually an empty list.
   final List<String> path;
 
   final String? buttonText;
 
+  /// Callback to execute when the form is submitted.
   final Function? onSubmit;
 
+  /// Callback to execute when the form is changed. \
+  /// This callback should call *state management* methods.
+  final Function(dynamic)? onChanged;
+
+  /// When to disable the form input.
   final bool disabled;
 
+  /// Widget to use to input a file
   final Widget? fileWidget;
 
-  final Map<String, dynamic> selectedFieldsCorrespondingToEnumFields;
-
-  final Function(dynamic, dynamic)? onSelectedFieldOnEnumField;
+  /// Current state of the form.
+  final Map<String, dynamic> formState;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +75,7 @@ class FlutterJsonSchemaForm extends StatelessWidget {
         if (jsonSchema.properties is Map)
           ...jsonSchema.properties.entries
               .map(
-                (entry) => FlutterJsonSchemaFormField.fromJsonSchema(
+                (entry) => FlutterJsonSchemaFormField(
                   fileWidget: fileWidget,
                   forceDisabled: disabled,
                   jsonSchema: entry.value,
@@ -74,9 +83,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
                   controller: controller,
                   editingControllerMapping:
                       controller.textEditingControllerMapping,
-                  selectedFieldsCorrespondingToEnumFields:
-                      selectedFieldsCorrespondingToEnumFields,
-                  onSelectedFieldOnEnumField: onSelectedFieldOnEnumField,
+                  formState: formState,
+                  onChanged: onChanged,
                 ),
               )
               .toList(),
