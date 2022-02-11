@@ -3,6 +3,7 @@
 library flutter_json_schema_form;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_json_schema_form/widgets/flutter_json_schema_field.dart';
 import 'package:json_schema_document/json_schema_document.dart';
 
@@ -22,6 +23,8 @@ class FlutterJsonSchemaForm extends StatelessWidget {
     this.disabled = false,
     this.path = const [],
     this.formState = const {},
+    this.translate = false,
+    this.translateBase = ''
   }) : super(key: key);
 
   /// JSON Schema to use to generate the form.
@@ -54,6 +57,22 @@ class FlutterJsonSchemaForm extends StatelessWidget {
   /// Current state of the form.
   final Map<String, dynamic> formState;
 
+  /// Translate the texts
+  final bool translate;
+
+  /// Translate base if no title is found
+  final String translateBase;
+
+  getTranslation(context, String key, String section) {
+    if (translate) {
+      if (key.substring(key.lastIndexOf('.') + 1) != section) {
+        key = key + '.' + section;
+      }
+      return FlutterI18n.translate(context, key);
+    }
+    return key;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,15 +81,13 @@ class FlutterJsonSchemaForm extends StatelessWidget {
       children: [
         if (jsonSchema.title is String)
           Text(
-            jsonSchema.title as String,
-            style: isInnerField
-                ? Theme.of(context).textTheme.headline6
-                : Theme.of(context).textTheme.headline5,
-          ),
+              getTranslation(context, jsonSchema.title != null ? jsonSchema.title.toString() : '', 'title'),
+              style: isInnerField
+                  ? Theme.of(context).textTheme.headline6
+                  : Theme.of(context).textTheme.headline5,
+            ),
         if (jsonSchema.description is String)
-          Text(
-            jsonSchema.description as String,
-          ),
+          Text(getTranslation(context, jsonSchema.description != null ? jsonSchema.description.toString() : '', 'description')),
         const SizedBox(height: 16),
         if (jsonSchema.properties is Map)
           ...jsonSchema.properties.entries
@@ -79,12 +96,15 @@ class FlutterJsonSchemaForm extends StatelessWidget {
                   fileWidget: fileWidget,
                   forceDisabled: disabled,
                   jsonSchema: entry.value,
+                  fieldName: entry.key,
                   path: path.isEmpty ? [entry.key] : [...path, entry.key],
                   controller: controller,
                   editingControllerMapping:
                       controller.textEditingControllerMapping,
                   formState: formState,
                   onChanged: onChanged,
+                  translateField: translate,
+                  translateBase: translateBase != '' ? translateBase : jsonSchema.title.toString()
                 ),
               )
               .toList(),

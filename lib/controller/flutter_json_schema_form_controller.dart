@@ -14,7 +14,7 @@ class FlutterJsonSchemaFormController {
   Map<String, dynamic>? initialState = {};
   Function(Map<String, dynamic>)? onChanged;
 
-  /// If null, the form inner state will be unaccessible.
+  /// If null, the form inner state will be inaccessible.
   Map<String, dynamic> textEditingControllerMapping = {};
 
   JsonSchema jsonSchema;
