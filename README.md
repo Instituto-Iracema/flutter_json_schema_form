@@ -15,6 +15,7 @@ Based on Flutter / Material Design Widgets / JSON Schema.
 - Integrates with Flutter Material Themes
 - Get programatically the form content as a JSON matching the provided JSON Schema
 - Fill the form programatically
+- ReadOnly fields
 - Standard Fields
 	- Object: forms inside forms
 	- Enum: easy select option UI
@@ -22,9 +23,6 @@ Based on Flutter / Material Design Widgets / JSON Schema.
 	- Number: get rid of boilerplate²
 - Special Fields
 	- File fields: custom synthax for handling files
-
-<!-- TODO: List what your package can do. Maybe include images, gifs, or videos. -->
-
 ## Getting started
 
 <!-- TODO: List prerequisites and provide or point to information on how to
