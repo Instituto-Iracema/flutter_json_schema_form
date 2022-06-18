@@ -4,11 +4,11 @@ Based on Flutter / Material Design Widgets / JSON Schema.
 ## Features
 
 <p>
-  <img src="https://github.com/flutter/plugins/blob/main/packages/in_app_purchase/in_app_purchase/doc/iap_ios.gif?raw=true"
-    alt="An animated image of the iOS in-app purchase UI" height="400"/>
+  <img src="https://github.com/Instituto-Iracema/flutter_json_schema_form/blob/trunk/prints/formWithMaterial2Theme.png"
+    alt="An image of a Material Design 2 form made with flutter_json_schema_form" height="400"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://github.com/flutter/plugins/blob/main/packages/in_app_purchase/in_app_purchase/doc/iap_android.gif?raw=true"
-   alt="An animated image of the Android in-app purchase UI" height="400"/>
+  <img src="https://github.com/Instituto-Iracema/flutter_json_schema_form/blob/trunk/prints/formWithMaterial3Theme.png"
+   alt="An image of a Material Design 3 form made with flutter_json_schema_form" height="400"/>
 </p>
 
 - Render form UI from the provided JSON Schema
