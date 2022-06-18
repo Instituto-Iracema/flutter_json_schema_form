@@ -1,20 +1,27 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
 Create beautiful and low-effort forms that output valid data.
 Based on Flutter / Material Design Widgets / JSON Schema.
 
 ## Features
+
+<p>
+  <img src="https://github.com/flutter/plugins/blob/main/packages/in_app_purchase/in_app_purchase/doc/iap_ios.gif?raw=true"
+    alt="An animated image of the iOS in-app purchase UI" height="400"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/flutter/plugins/blob/main/packages/in_app_purchase/in_app_purchase/doc/iap_android.gif?raw=true"
+   alt="An animated image of the Android in-app purchase UI" height="400"/>
+</p>
+
+- Render form UI from the provided JSON Schema
+- Integrates with Flutter Material Themes
+- Get programatically the form content as a JSON matching the provided JSON Schema
+- Fill the form programatically
+- Standard Fields
+	- Object: forms inside forms
+	- Enum: easy select option UI
+	- String: get rid of boilerplate
+	- Number: get rid of boilerplate²
+- Special Fields
+	- File fields: custom synthax for handling files
 
 <!-- TODO: List what your package can do. Maybe include images, gifs, or videos. -->
 
