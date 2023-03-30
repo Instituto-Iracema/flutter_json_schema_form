@@ -1,6 +1,6 @@
 name: flutter_json_schema_form
 description: Create beautiful and low-effort forms that output valid data. Based on Flutter / Material Design Widgets / JSON Schema.
-version: 0.0.7
+version: 0.0.8
 repository: https://github.com/Instituto-Iracema/flutter_json_schema_form
 
 environment:
@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   json_schema_document: ^0.0.4
   tuple: ^2.0.0
-  file_picker: ^4.2.7
+  file_picker: ^5.2.6
       
 
 dev_dependencies:
